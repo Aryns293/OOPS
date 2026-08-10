@@ -2,7 +2,7 @@
 
 A constructor is a special member function automatically called when an object is created. No return type, same name as the class, used to initialize data members.
 
-* Must be in the public section
+* Must be in the public section. The constructor must be placed in the public section of the class because we want the class to be instantiated anywhere.
 * Called only once per object, at creation
 * Can be overloaded
 * Cannot be virtual — the virtual mechanism needs a VTABLE, which doesn't exist yet when the constructor runs (no object exists yet). Virtual destructor IS possible, though.

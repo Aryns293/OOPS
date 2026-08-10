@@ -3,7 +3,7 @@
 * Only one copy exists for the entire class, shared by all objects
 * Initialized before any object is created — even before `main()` starts
 * Visible only within the class, but lifetime = entire program
-* Declared inside the class, defined outside
+* `static data_type name_of_member;` — Declared inside the class body. Defined outside the class. Static member variables are not belonging to any objects, but its belongs to whole class so these are called class member variable.
 * Belongs to the class, not any object
 
 **Advantage:** memory efficient — no instance needed to access it.
@@ -18,7 +18,11 @@ class Truck {
 private:
    static int count = 0;
 public:
-   static int getCount() { return count; }
-   Truck() { count++; }
+   static int getCount() {
+      return count;
+   }
+   Truck() {
+      count++;
+   }
 };
 ```

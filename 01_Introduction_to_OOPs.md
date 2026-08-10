@@ -28,7 +28,13 @@ It simplifies software development and maintenance via: Object, Class, Inheritan
 * Not suitable for small problems
 * Proper documentation required for later use
 
+**Class:** Class is a user defined data type that have its own properties and behaviors. In C++, class is a group of similar objects. It is a template from which objects are created. It can have fields, methods, constructors etc.
+
+**Object:** Any entity that has state and behavior is known as an object. For example: chair, pen, table, keyboard, bike etc. It can be physical and logical.
+
 ## Class vs Structure
+
+**Why use structures?** What is the main reason for using structure? A structure is used to represent information about something more complicated than a single number, character, or Boolean can do (and more complicated than an array of the above data types can do). For example, a student can be defined by his or her name, gpa, age, uid, etc.
 | Class | Structure |
 | :--- | :--- |
 | User-defined blueprint from which objects are created | User-defined collection of variables of different data types |

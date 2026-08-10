@@ -94,3 +94,5 @@ public:
 * Can be declared in public or private sections without affecting meaning
 * Usually has objects as arguments
 * Can be a global function or a member of another class
+
+**Note:** Private members are not allowed to be accessed directly by any object or function outside the class. Only the member functions or the friend functions are allowed to access the private data members of the class in C++.

@@ -32,12 +32,88 @@ Name matches class exactly, begins with `~`.
 
 Used to control destruction of objects — e.g., preventing dangling references when a pointer is passed to a function that deletes the object.
 
-* `Test t;` → compiler error (can't stack-construct)
-* `Test* t;` → fine (just a pointer, nothing constructed)
-* `Test* t = new Test;` → fine (dynamic allocation, programmer's responsibility to delete)
-* Only dynamic objects can be created if the destructor is private
-* A friend function, or a class method like `void destruct() { delete this; }`, can be used to trigger a private destructor
+In the case where the destructor is declared private, an instance of the class can also be created using the `malloc()` function.
 
+### Examples of Private Destructors
+
+**1. Class with private destructor and pointer only (no instance)**
+
+```cpp
+// Private Destructor
+#include <iostream>
+using namespace std;
+class Test {
+private:
+    ~Test() {}
+};
+int main() { Test* t; }
+```
+*The above program works fine. There is no object being constructed, the program just creates a pointer of type `Test`, so nothing is destructed.*
+
+**2. Dynamic allocation with private destructor**
+
+```cpp
+// Private Destructor
+#include <iostream>
+using namespace std;
+class Test {
+private:
+    ~Test() {}
+};
+int main() { Test* t = new Test; }
+```
+*The above program also works fine. When something is created using dynamic memory allocation, it is the programmer's responsibility to delete it. So, compiler doesn't bother.*
+
+**3. Friend function deletes private destructor**
+
+```cpp
+// Private Destructor
+#include <iostream>
+
+// A class with private destructor
+class Test {
+private:
+    ~Test() {}
+public:
+    friend void destructTest(Test*);
+};
+
+// Only this function can destruct objects of Test
+void destructTest(Test* ptr) { delete ptr; }
+
+int main()
+{
+    // create an object
+    Test* ptr = new Test;
+    // destruct the object
+    destructTest(ptr);
+    return 0;
+}
+```
+
+**4. Class instance method private destructor**
+
+```cpp
+#include <iostream>
+using namespace std;
+
+class parent {
+    // private destructor
+    ~parent() { cout << "destructor called" << endl; }
+public:
+    parent() { cout << "constructor called" << endl; }
+    void destruct() { delete this; }
+};
+
+int main()
+{
+    parent* p;
+    p = new parent;
+    // destructor called
+    p->destruct();
+    return 0;
+}
+```
 ## Interview Q&A
 * **Does the compiler create a default constructor when we write our own?** — No.
 * **Explain constructor** — special member function, auto-called, initializes data members.

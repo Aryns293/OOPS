@@ -70,8 +70,8 @@ int main() {
 ```
 
 * **Diagram:** P (pointer) → OBJ1 (containing vptr) → points to VTABLE for class derived, which holds: address of DERIVED version of fun_2, address of BASE version of fun_3, address of BASE version of fun_4. The separate VTABLE for class base holds addresses of base versions of fun_2/3/4.
-* **How compiler fills VTABLE:** for each virtual function slot, check if overridden in the derived class — if yes, point to derived version, else point to base version. For chain A→B→C, check C first, then B, then A.
-* VTABLEs are formed at compile time but are static arrays — all instances of a class share the same VTABLE
+* **How compiler fills VTABLE:** Say suppose there is class A, from class A there is a derived class B, from B there is also a derived class C, while filling the Virtual Table will see for a particular function if there is in C, we will point to C, if it is not there in C, we will check if there is in B, if yes than we will points to this else we will point to A.
+* VTABLEs are formed at compile time but are static arrays — all instances of a class share the same VTABLE. Since these V-Tables are static array that means all the objects instances points to the same V-Table, so all the objects' points to one V-Table, now there should be something which points object to V-Table. For that compiler does whenever a class declare a new virtual function will added to that class that is called virtual pointer, now when new object is instantiated compiler adds some extra code to constructor and it points this virtual pointer to the V-Table according to object type and V-pointer points to V-Table at real time so run time polymorphism will achieved.
 * VTABLE is object-independent; VPTR is object-dependent
 * `Emp* a = new engineer();` — VPTR assigned according to object type, not pointer type — this is late binding/runtime polymorphism, since object type is only known at execution
 
@@ -91,17 +91,215 @@ Compiler adds code at two places:
 
 ## Without Virtual Functions — Example
 
-A `Shape` base class with non-virtual `get_Area()`; derived `Square`/`Rectangle` override it — called via `Shape*`, it ALWAYS calls the BASE version ("This is call to parent class area" printed both times), because binding is compile-time (pointer type), not runtime (object type). With virtual, the correct derived version is called each time.
+A `Shape` base class with non-virtual `get_Area()`; derived `Square`/`Rectangle` override it.
+
+```cpp
+// C++ program to demonstrate how we will calculate
+// area of shapes without virtual function
+#include <iostream>
+using namespace std;
+
+// Base class
+class Shape {
+public:
+   // parameterized constructor
+   Shape(int l, int w)
+   {
+      length = l;
+      width = w;
+   }
+   int get_Area()
+   {
+      cout << "This is call to parent class area\n";
+      // Returning 1 in user-defined function means true
+      return 1;
+   }
+protected:
+   int length, width;
+};
+
+// Derived class
+class Square : public Shape {
+public:
+   Square(int l = 0, int w = 0)
+      : Shape(l, w)
+   {
+   } // declaring and initializing derived class constructor
+   int get_Area()
+   {
+      cout << "Square area: " << length * width << '\n';
+      return (length * width);
+   }
+};
+
+// Derived class
+class Rectangle : public Shape {
+public:
+   Rectangle(int l = 0, int w = 0)
+      : Shape(l, w)
+   {
+   } // declaring and initializing derived class constructor
+   int get_Area()
+   {
+      cout << "Rectangle area: " << length * width << '\n';
+      return (length * width);
+   }
+};
+
+int main()
+{
+   Shape* s;
+   // Making object of child class Square
+   Square sq(5, 5);
+   // Making object of child class Rectangle
+   Rectangle rec(4, 5);
+
+   s = &sq; // reference variable
+   s->get_Area();
+   s = &rec; // reference variable
+   s->get_Area();
+
+   return 0; // to tell the program executed successfully
+}
+// Output:
+// This is call to parent class area
+// This is call to parent class area
+```
+
+## WITH Virtual Functions — Example
+
+```cpp
+// C++ program to demonstrate how we will calculate
+// the area of shapes USING VIRTUAL FUNCTION
+#include <fstream>
+#include <iostream>
+using namespace std;
+
+// Declaration of Base class
+class Shape {
+public:
+   // Usage of virtual constructor
+   virtual void calculate()
+   {
+      cout << "Area of your Shape ";
+   }
+   // usage of virtual Destructor to avoid memory leak
+   virtual ~Shape()
+   {
+      cout << "Shape Destuctor Call\n";
+   }
+};
+
+// Declaration of Derived class
+class Rectangle : public Shape {
+public:
+   int width, height, area;
+   void calculate()
+   {
+      cout << "Enter Width of Rectangle: ";
+      cin >> width;
+      cout << "Enter Height of Rectangle: ";
+      cin >> height;
+      area = height * width;
+      cout << "Area of Rectangle: " << area << "\n";
+   }
+   // Virtual Destructor for every Derived class
+   virtual ~Rectangle()
+   {
+      cout << "Rectangle Destuctor Call\n";
+   }
+};
+
+// Declaration of 2nd derived class
+class Square : public Shape {
+public:
+   int side, area;
+   void calculate()
+   {
+      cout << "Enter one side your of Square: ";
+      cin >> side;
+      area = side * side;
+      cout << "Area of Square: " << area << "\n";
+   }
+   // Virtual Destructor for every Derived class
+   virtual ~Square()
+   {
+      cout << "Square Destuctor Call\n";
+   }
+};
+
+int main()
+{
+   // base class pointer
+   Shape* S;
+   Rectangle r;
+
+   // initialization of reference variable
+   S = &r;
+   // calling of Rectangle function
+   S->calculate();
+
+   Square sq;
+   // initialization of reference variable
+   S = &sq;
+   // calling of Square function
+   S->calculate();
+
+   // return 0 to tell the program executed successfully
+   return 0;
+}
+// Output:
+// Enter Width of Rectangle: 10
+// Enter Height of Rectangle: 20
+// Area of Rectangle: 200
+// Enter one side your of Square: 16
+// Area of Square: 256
+```
 
 ## Real-Life Use Case
 
-Employee management: base Employee with virtual `raiseSalary()`, `promote()`; derived Manager etc. override with specific logic.
+Virtual functions allow us to create a list of base class pointers and call methods of any of the derived classes without even knowing the kind of derived class object.
+
+Consider employee management software for an organization. Let the code has a simple base class Employee, the class contains virtual functions like raiseSalary(), transfer(), promote(), etc. Different types of employees like Managers, Engineers, etc., may have their own implementations of the virtual functions present in base class Employee. In our complete software, we just need to pass a list of employees everywhere and call appropriate functions without even knowing the type of employee. For example, we can easily raise the salary of all employees by iterating through the list of employees. Every type of employee may have its own logic in its class, but we don't need to worry about them because if raiseSalary() is present for a specific employee type, only that function would be called.
 
 ```cpp
-void globalRaiseSalary(Employee* emp[], int n) {
-   for (int i = 0; i < n; i++) { 
-       emp[i]->raiseSalary(); // Polymorphic call
-   }  
+class Employee {
+public:
+   virtual void raiseSalary()
+   {
+      // common raise salary code
+   }
+   virtual void promote()
+   {
+      // common promote code
+   }
+};
+
+class Manager : public Employee {
+   virtual void raiseSalary()
+   {
+      // Manager specific raise salary code, may contain
+      // increment of manager specific incentives
+   }
+   virtual void promote()
+   {
+      // Manager specific promote
+   }
+};
+
+// Similarly, there may be other types of employees
+// We need a very simple function to increment the salary of all employees
+// Note that emp[] is an array of pointers and actual pointed objects can be any type of employees
+// This function should ideally be in a class like Organization, we have made it global to keep things simple
+
+void globalRaiseSalary(Employee* emp[], int n)
+{
+    for (int i = 0; i < n; i++) {
+        // Polymorphic Call: Calls raiseSalary()
+        // according to the actual object, not
+        // according to the type of pointer
+        emp[i]->raiseSalary();
+    }
 }
 ```
 

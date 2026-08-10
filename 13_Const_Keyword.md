@@ -1,6 +1,6 @@
 # TOPIC 13: Const Keyword (C++)
 
-Attaching `const` to a method(), variable, pointer, or object prevents that entity from modifying its data value.
+Whenever `const` keyword is attached with any method(), variable, pointer variable, and with the object of a class it prevents that specific object/method()/variable to modify its data items value.
 
 ## Declaring constants — 3 forms:
 
