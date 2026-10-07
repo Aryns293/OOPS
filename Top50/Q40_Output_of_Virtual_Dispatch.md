@@ -1,32 +1,38 @@
 # Q40 Output of Virtual Dispatch
 
-**Interview Answer:**
-Given:
+## 🎯 Interview Answer
 
-cpp
+### 💻 Given Code:
+```cpp
 class Base {
 public:
     virtual void show() { cout << "In Base\n"; }
 };
+
 class Derived : public Base {
 public:
-    void show() { cout << "In Derived\n"; }
+    void show() override { cout << "In Derived\n"; }
 };
+
 int main() {
     Base *bp = new Derived;
     bp->show();
     bp->Base::show();
     return 0;
 }
-Output:
+```
 
-text
+### 🖨️ Output:
+```text
 In Derived
 In Base
-Explanation:
+```
 
-bp->show() uses virtual dispatch → calls Derived::show() because the object is Derived.
+### 🧠 Explanation:
+1. `bp->show()` uses **virtual dispatch** → It calls `Derived::show()` because the actual object being pointed to is of type `Derived`.
+2. `bp->Base::show()` uses the **scope resolution operator (`::`)** → It explicitly calls `Base::show()`, completely bypassing the virtual dispatch mechanism.
 
-bp->Base::show() uses scope resolution → explicitly calls Base::show(), bypassing the virtual mechanism.
+---
 
-Summary: Virtual call uses actual object type; scope resolution forces base version.
+## 🎯 Summary to Impress
+A standard virtual call uses the **actual object type** (dynamic dispatch). However, using the scope resolution operator forces the compiler to call the **statically specified base version**, bypassing polymorphism.
