@@ -1,32 +1,47 @@
 # Q31 Virtual Function in Constructor
 
-**Interview Answer:**
-Yes, but with a catch: during construction and destruction, virtual dispatch does not work as expected. The call resolves to the current class’s version, not the derived class’s.
+## 🎯 Interview Answer
+Can you call a virtual function in a constructor? **Yes, but with a catch**: during construction and destruction, virtual dispatch does not work polymorphically as you might expect. The call resolves to the **current class’s version**, not the most derived class’s version.
 
-Why?
+### ❓ Why does this happen?
+- **During base class construction**, the derived part of the object doesn’t exist yet. Calling a derived method would be dangerous.
+- **During base class destruction**, the derived part of the object is already destroyed.
+- Internally, as each base/derived layer is constructed or destroyed, the VPTR (Virtual Pointer) points to the VTABLE of the **current class being initialized or destroyed**, not the final derived class.
 
-During base class construction, the derived part doesn’t exist yet.
+---
 
-During base class destruction, the derived part is already destroyed.
+## 💻 Code Example
 
-The VPTR points to the current class’s VTABLE.
-
-Code:
-
-cpp
+```cpp
 class Base {
 public:
-    Base() { show(); }          // calls Base::show()
-    virtual void show() { cout << "Base\n"; }
+    Base() { 
+        show();                 // Calls Base::show()
+    }          
+    virtual void show() { 
+        cout << "Base\n"; 
+    }
 };
 
 class Derived : public Base {
 public:
-    Derived() { show(); }       // calls Derived::show()
-    void show() override { cout << "Derived\n"; }
+    Derived() { 
+        show();                 // Calls Derived::show()
+    }       
+    void show() override { 
+        cout << "Derived\n"; 
+    }
 };
 
 int main() {
-    Derived d;  // Output: Base, then Derived
+    Derived d;  
+    // Output: 
+    // Base
+    // Derived
 }
-Summary: Avoid calling virtual functions in constructors/destructors; behavior is not polymorphic.
+```
+
+---
+
+## 🎯 Summary to Impress
+**Avoid calling virtual functions in constructors and destructors**. The behavior is not polymorphic, and it often leads to unexpected results or bugs because the object is in an incomplete state.
