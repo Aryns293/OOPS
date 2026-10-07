@@ -1,7 +1,7 @@
 # Q19 Operator Overloading
 
 ## 🎯 Interview Answer
-**Operator Overloading** is a feature in C++ that allows us to redefine the behavior of existing operators (like `+`, `-`, `*`, `==`, `<<`, etc.) for user-defined types (classes/structs). It lets us use operators with objects in a natural, intuitive way, just like with built-in types. It is a form of compile-time polymorphism.
+**Operator Overloading** allows an existing C++ operator to be given a meaning for a user-defined type. It lets us use operators with objects in a natural, intuitive way, just like with built-in types. It is a form of compile-time polymorphism.
 
 For example, we can overload `+` for a `Complex` class so that `c1 + c2` adds two complex numbers.
 
@@ -38,7 +38,7 @@ int main() {
     return 0;
 }
 ```
-> **Note:** Here, `c1 + c2` is translated by the compiler to `c1.operator+(c2)`.
+> **Note:** For this member overload, `c1 + c2` is equivalent to calling `c1.operator+(c2)`. If it were implemented as a non-member, the conceptual transformation would instead be `operator+(c1, c2)`.
 
 ---
 
@@ -58,16 +58,32 @@ The following operators **cannot** be overloaded in C++:
 - `.` and `.*` are used to access members; overloading them would create ambiguity and break the language’s core syntax.
 - `?:` is a control-flow operator; overloading it would complicate parsing and is unnecessary.
 
-> **Note:** You also cannot create new operators (e.g., `**` for exponentiation) or change an operator’s precedence, associativity, or number of operands.
+> **Note on memory operators:** `new` and `delete` **CAN** be overloaded (along with `new[]` and `delete[]`). Don't assume memory-related operators are off-limits!
 
 ---
 
 ## 📜 Rules for Operator Overloading
-1. At least one operand must be a user-defined type (class/struct/enum). You cannot overload operators for only built-in types.
-2. You cannot change the number of operands (arity) of an operator.
-3. You cannot change the precedence or associativity.
-4. **Must be member functions:** `=`, `[]`, `()`, `->`, `->*`
-5. **Must be non-member functions (usually friend):** `<<`, `>>` for streams.
+1. At least one operand must involve a user-defined type (class/struct/enum).
+2. Cannot change the operator's arity (number of operands).
+3. Cannot change precedence.
+4. Cannot change associativity.
+5. Cannot create new operators (e.g., `**` for exponentiation).
+6. `=`, `[]`, `()`, `->`, `->*` must be **non-static member functions**.
+7. `<<` and `>>` are typically non-member functions, often declared as `friend`, especially for stream I/O.
+
+---
+
+## 🌟 Deep Dive: Why is `<<` Usually a Non-Member?
+Consider printing an object: `cout << obj;`
+
+The operands are:
+- Left operand: `cout` (an `ostream` object)
+- Right operand: `obj` (a `Complex` object)
+
+If you made `operator<<` a member of `Complex`, the left operand would have to be the `Complex` object, forcing you to write `obj << cout;`. To keep the natural syntax `cout << obj;`, it is implemented as a non-member (often a `friend`):
+```cpp
+friend ostream& operator<<(ostream& out, const Complex& obj)
+```
 
 ---
 
@@ -79,10 +95,10 @@ The following operators **cannot** be overloaded in C++:
           +----+----+
           |         |
        Member    Non-Member
-     (Operator) (Friend/Global)
           |         |
-=, [], (), ->   <<, >>, +, -, ==
+=, [], (), ->, ->*  <<, >>, +, -, ==
 ```
+*(Note: `+`, `-`, `==`, and many others can technically be either member or non-member, while `=`, `[]`, `()`, `->`, `->*` strictly require membership).*
 
 ---
 
@@ -93,8 +109,8 @@ The following operators **cannot** be overloaded in C++:
 - **Cannot overload:** `::`, `sizeof`, `.`, `.*`, `?:`.
 - **Cannot create** new operators or change precedence/associativity.
 - At least **one operand** must be user-defined.
-- Some operators must be members; some are better as non-members.
-- Use it judiciously — overuse can make code confusing.
+- `=`, `[]`, `()`, `->`, `->*` must be non-static members.
+- `<<` and `>>` are better as non-members to allow standard `cout << obj` syntax.
 
 ---
 
