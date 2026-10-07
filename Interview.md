@@ -1,4 +1,4 @@
-# 60 OOPs Interview Questions for SDE-1 Freshers (C++/Java)
+# 60 OOPs Interview Questions for SDE-1 Freshers (C++)
 
 ## Section 1: OOP Fundamentals (Q1–Q8)
 
@@ -778,26 +778,6 @@ int main() {
 
 **Note:** If one function is defined in the derived class itself, that one is used by default.
 
----
-
-**Q32. Why is multiple inheritance not supported in Java via classes?**
-
-**Answer:** To reduce complexity and simplify the language. If C inherits both A and B, and A and B have the same method, calling it from C creates **ambiguity** (which method to call?).
-
-Since **compile-time errors are better than runtime errors**, Java gives a compile-time error for inheriting 2 classes — regardless of whether methods differ.
-
-**Solution in Java:** Use **interfaces** for multiple inheritance. A class can implement multiple interfaces.
-
-```java
-interface A { void show(); }
-interface B { void display(); }
-class C implements A, B {
-    public void show() { }
-    public void display() { }
-}
-```
-
----
 
 ## Section 5: Polymorphism & Virtual Functions (Q33–Q42)
 
@@ -1371,22 +1351,6 @@ const int var = 5;     // ✓ Valid
 void fun() const { }   // cannot modify object's data members
 ```
 
----
-
-**Q53. What is the `super` keyword in Java?**
-
-**Answer:** `super` is a reference variable referring to the immediate parent class object.
-
-**Three uses:**
-1. Refer to parent class's instance variable.
-2. Invoke parent class's method.
-3. `super()` — invoke parent class's constructor.
-
-**Note:** `super()` is added automatically by the compiler in each class constructor if there's no explicit `super()` or `this()`.
-
-**Real use:** If `Emp` inherits `Person`, all `Person` properties are inherited. To initialize all properties, use the parent class constructor from the child via `super()` — reusing the parent's constructor.
-
----
 
 **Q54. What is a Namespace?**
 
