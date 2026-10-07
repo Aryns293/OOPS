@@ -1,32 +1,41 @@
 # Q27 Static Data Member
 
-**Interview Answer:**
-A static data member is a class member that is shared by all objects of the class. Only one copy exists, regardless of how many objects are created.
+## 🎯 Interview Answer
+A **static data member** is a class-level member that is shared by all objects of the class. Only one single copy exists in memory, regardless of how many objects of that class are created.
 
-Key points:
+### ⚙️ Key Points:
+- **Declaration**: Declared inside the class with the `static` keyword.
+- **Definition**: Defined outside the class (e.g., `int ClassName::count = 0;`).
+- **Initialization**: Initialized before any object is created (even before `main()` executes).
+- **Usage**: Used for properties that are common to all objects (e.g., `rateOfInterest`, `companyName`) or as an object instance counter.
 
-Declared inside class with static.
+---
 
-Defined outside class: int ClassName::count = 0;
+## 💻 Code Example
 
-Initialized before any object is created (even before main()).
-
-Used for properties common to all objects (e.g., rateOfInterest, companyName) or as a counter.
-
-Code:
-
-cpp
+```cpp
 class Student {
-    static int count;  // declaration
+    static int count;  // declaration inside class
 public:
-    Student() { count++; }
-    static int getCount() { return count; }
+    Student() { 
+        count++; 
+    }
+    
+    static int getCount() { 
+        return count; 
+    }
 };
 
-int Student::count = 0;  // definition
+// definition outside class
+int Student::count = 0;  
 
 int main() {
     Student s1, s2;
-    cout << Student::getCount();  // 2
+    cout << Student::getCount();  // Output: 2
 }
-Summary: Static data members are class-level variables, shared across all instances.
+```
+
+---
+
+## 🎯 Summary to Impress
+Static data members are **class-level variables** that are shared across all instances of a class. They belong to the class itself rather than to any specific object.
