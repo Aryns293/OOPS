@@ -1,19 +1,20 @@
 # Q20 Method Overriding
 
 ## 🎯 Interview Answer
-**Method Overriding** is a feature in OOP where a derived class redefines a method of its base class with the exact same name, parameters, and return type. It is used to achieve runtime polymorphism. When a method is called through a base class pointer or reference, the derived class version is executed based on the actual object type at runtime.
+**Method Overriding** is a feature in OOP where a derived class redefines a method of its base class with the **same function name and parameter list, with the same or a covariant return type**. It is used to achieve runtime polymorphism. When a method is called through a base class pointer or reference, the derived class version is executed based on the actual object type at runtime.
 
 ---
 
 ## 📜 Rules for Method Overriding in C++
 
-1. **Inheritance required** – There must be a base class and a derived class. Overriding happens across classes, not within the same class.
-2. **Same signature** – The method name, parameter list, and return type must be identical (or covariant return type in some cases). In C++11, use the `override` keyword to enforce this.
-3. **Virtual function in base** – The base class method must be declared `virtual`. Without `virtual`, it’s just function hiding, not overriding.
-4. **Access modifier** – The access level of the overridden method in the derived class can be different, but it’s usually kept the same or less restrictive. (In C++, access is checked at compile time based on the static type.)
-5. **Cannot override non-virtual functions** – Only virtual functions can be overridden.
-6. **Cannot override static functions** – Static member functions cannot be virtual, so they cannot be overridden.
-7. **Cannot override constructors/destructors** – Constructors cannot be virtual. Destructors can be virtual and should be overridden if needed.
+1. **Inheritance required** — overriding occurs between a base and derived class.
+2. **Same name and parameter list** — the return type must be the same or covariant.
+3. **Base function must be virtual** for runtime overriding/dynamic dispatch. Without `virtual`, it’s just function hiding, not overriding.
+4. **Access specifier can differ**; access control does not prevent overriding.
+5. **Static functions cannot be overridden** because static functions cannot be virtual.
+6. **Constructors cannot be overridden or virtual**.
+7. **Destructors can be virtual**; a virtual base destructor is important when deleting derived objects through a base pointer.
+8. **Use `override`** to let the compiler verify that you are actually overriding a virtual function.
 
 ---
 
@@ -25,12 +26,12 @@ public:
     virtual void sound() {          // virtual function
         cout << "Animal makes a sound\n";
     }
-    virtual ~Animal() {}            // virtual destructor (good practice)
+    virtual ~Animal() {}            // virtual base destructor (important!)
 };
 
 class Dog : public Animal {
 public:
-    void sound() override {         // override keyword (C++11)
+    void sound() override {         // override keyword
         cout << "Dog barks\n";
     }
 };
@@ -54,7 +55,9 @@ int main() {
     return 0;
 }
 ```
-> **Note:** Here, `sound()` is called through `Animal*` pointers, but the derived versions execute because of runtime polymorphism.
+> **Note:** Here, `sound()` is called through `Animal*` pointers, but the derived versions execute because of runtime polymorphism (dynamic dispatch). 
+
+*(Note on object slicing: If you call a virtual function through a base **object** rather than a pointer/reference—e.g., `Animal a = Dog(); a.sound();`—it will call `Animal::sound()` because the object was sliced down to an `Animal`.)*
 
 ---
 
@@ -80,23 +83,23 @@ a->sound();  --> Dog::sound()  (resolved at runtime via VTABLE)
 
 | Feature | Overriding | Overloading |
 |---------|------------|-------------|
-| **Scope** | Base and derived classes | Same class |
-| **Binding** | Runtime (dynamic) | Compile-time (static) |
-| **Signature** | Must be identical | Must differ (parameters) |
-| **Virtual** | Requires `virtual` in base | No `virtual` needed |
-| **Purpose** | Runtime polymorphism | Readability/convenience |
+| **Where** | Base + derived relationship | Multiple functions with same name but different parameter lists |
+| **Binding** | Runtime | Compile-time |
+| **Parameters** | Same | Different |
+| **Virtual** | Required for runtime overriding | Not required |
+| **Purpose** | Specialized derived behavior | Multiple ways to call same operation |
 
 ---
 
 ## 💡 Key Points to Impress
-- **Overriding** = redefining a virtual base method in derived class with the same signature.
-- Enables **runtime polymorphism**.
-- Base method **must be virtual**.
-- Use `override` keyword (C++11) to catch errors.
-- **Cannot override:** non-virtual, static, or constructors.
-- **Destructor** can be virtual and should be overridden if needed.
-- **Access modifier** can change, but usually kept the same.
-- Works via **VTABLE** and **VPTR**.
+- Overriding = derived class provides a new implementation of a virtual base-class function.
+- Enables runtime polymorphism/dynamic dispatch.
+- Base function must be virtual for virtual dispatch.
+- Use `override` to catch signature mistakes.
+- Access modifiers do not determine whether overriding occurs.
+- Static functions and constructors cannot be overridden.
+- A virtual base destructor is important for polymorphic base classes.
+- C++ implementations typically use mechanisms such as vtable/vptr for virtual dispatch.
 
 ---
 
