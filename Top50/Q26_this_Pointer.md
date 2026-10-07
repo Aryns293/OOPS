@@ -1,7 +1,9 @@
 # Q26 `this` Pointer
 
 ## 🎯 Interview Answer
-The `this` pointer is an implicit pointer available only inside **non-static** member functions. It points to the current object that invoked the member function.
+The `this` pointer is a this pointer is an implicit pointer available only inside non-static member functions.
+It points to the current object inside a non-static member function.
+It tells the function which object it is currently operating on.
 
 ### ⚙️ Uses of `this`:
 - **Resolve name conflicts**: `this->x = x;` (distinguishes member variables from local parameters).
