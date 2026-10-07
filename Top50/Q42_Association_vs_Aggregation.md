@@ -1,16 +1,34 @@
-# Q42 Association vs Aggregation
+# Q42 Association vs Aggregation vs Composition
 
-**Interview Answer:**
-Association: General “uses-a” relationship. Two classes are related but independent.
+## 🎯 Interview Answer
 
-Aggregation: “Has-a” with weak ownership. The part can exist independently of the whole. Example: Team has Players; players can exist without the team.
+### 🔗 Association
+- **Meaning:** A general “uses-a” relationship. 
+- **Ownership:** None. Two classes are related but completely independent of each other.
 
-Composition: “Has-a” with strong ownership. The part cannot exist without the whole. Example: House has Rooms; rooms don’t exist without the house.
+### 🤝 Aggregation
+- **Meaning:** A “has-a” relationship with **weak ownership**.
+- **Lifecycle:** The part can exist independently of the whole.
+- **Example:** A `Team` has `Players`; if the team is dissolved, the players still exist independently.
 
-Diagram:
+### 🏗️ Composition
+- **Meaning:** A “has-a” relationship with **strong ownership**.
+- **Lifecycle:** The part **cannot** exist without the whole. If the whole is destroyed, the part is destroyed.
+- **Example:** A `House` has `Rooms`; if the house is demolished, the rooms cease to exist.
 
-text
-Association: A ---> B
-Aggregation: A <>-- B (hollow diamond)
-Composition: A <#>-- B (filled diamond)
-Summary: Aggregation = weak, Composition = strong. Both are “has-a”.
+---
+
+## 📊 Diagram (UML Notation)
+
+```text
+Association: A ---> B                   (Arrow)
+Aggregation: A <>-- B                   (Hollow diamond at 'A')
+Composition: A <#>-- B                  (Filled diamond at 'A')
+```
+
+---
+
+## 🎯 Summary to Impress
+- **Aggregation** = weak "has-a" (independent lifecycles).
+- **Composition** = strong "has-a" (dependent lifecycles).
+- **Association** is the umbrella term for a relationship between two independent classes.
