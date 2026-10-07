@@ -9,22 +9,22 @@
 
 | Part | Topic | Key Focus |
 |------|-------|-----------|
-| 1 | Foundations | POP vs OOP, 4 Pillars, Why OOP |
-| 2 | Classes & Objects | Class vs Object, Class vs Struct, Memory |
-| 3 | Encapsulation & Access Modifiers | Data hiding, Access levels |
-| 4 | Abstraction | Abstract classes, Interfaces |
-| 5 | Constructors & Destructors | Types, Copy, Shallow/Deep, Rule of 3 |
-| 6 | this Pointer, Static, Friend | Core mechanics |
-| 7 | Inheritance | Types, Modes, Diamond Problem |
-| 8 | Polymorphism | Overloading, Overriding, Virtual Functions |
-| 9 | VTABLE & VPTR | Runtime polymorphism internals |
-| 10 | Templates | Generic programming |
-| 11 | Exception Handling | try/catch/throw |
-| 12 | Keywords | const, explicit, final, super |
-| 13 | SOLID & Design Patterns | Design principles |
-| 14 | Output-Based Questions | Common trick questions |
-| 15 | Quick Reference Tables | All comparisons at a glance |
-| 16 | Study Plan & Checklist | Final revision |
+| 1 | [Foundations](#part-1--foundations) | POP vs OOP, 4 Pillars, Why OOP |
+| 2 | [Classes & Objects](#part-2--classes--objects) | Class vs Object, Class vs Struct, Memory |
+| 3 | [Encapsulation & Access Modifiers](#part-3--encapsulation--access-modifiers) | Data hiding, Access levels |
+| 4 | [Abstraction](#part-4--abstraction) | Abstract classes, Interfaces |
+| 5 | [Constructors & Destructors](#part-5--constructors--destructors) | Types, Copy, Shallow/Deep, Rule of 3 |
+| 6 | [this Pointer, Static, Friend](#part-6--this-pointer-static-friend) | Core mechanics |
+| 7 | [Inheritance](#part-7--inheritance) | Types, Modes, Diamond Problem |
+| 8 | [Polymorphism](#part-8--polymorphism) | Overloading, Overriding, Virtual Functions |
+| 9 | [VTABLE & VPTR](#part-9--vtable--vptr) | Runtime polymorphism internals |
+| 10 | [Templates](#part-10--templates--generic-programming) | Generic programming |
+| 11 | [Exception Handling](#part-11--exception-handling) | try/catch/throw |
+| 12 | [Keywords](#part-12--important-keywords) | const, explicit, final, super |
+| 13 | [SOLID & Design Patterns](#part-13--solid-principles--design-patterns) | Design principles |
+| 14 | [Output-Based Questions](#part-14--output-based-questions) | Common trick questions |
+| 15 | [Quick Reference Tables](#part-15--quick-reference-tables) | All comparisons at a glance |
+| 16 | [Study Plan & Checklist](#part-16--study-plan--checklist) | Final revision |
 
 ---
 
