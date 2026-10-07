@@ -1,10 +1,10 @@
 # Q21 Overloading vs Overriding
 
 ## 🎯 Interview Answer
-**Overloading** and **Overriding** are both forms of polymorphism in C++, but they are completely different concepts. The key difference is **when** the method is resolved and **where** it occurs.
+**Overloading** and **overriding** are two different forms of polymorphism in C++. The key difference is **when** the method is resolved and **where** it occurs.
 
-- **Overloading** happens within the same class (or same scope). Multiple functions have the same name but different parameters. The compiler decides which one to call at compile time based on the arguments. This is compile-time (static) polymorphism.
-- **Overriding** happens between a base class and a derived class. The derived class redefines a virtual method of the base class with the exact same signature. The actual method called is decided at runtime based on the object’s type. This is runtime (dynamic) polymorphism.
+- **Overloading** means having multiple functions with the same name but different parameter lists. The compiler selects the appropriate function during compile time, so it is compile-time (static) polymorphism.
+- **Overriding** occurs when a derived class provides a new implementation of a virtual function inherited from the base class with the same parameter list. When accessed through a base pointer or reference, the appropriate implementation is selected at runtime using dynamic dispatch, so it is runtime (dynamic) polymorphism.
 
 ---
 
@@ -18,7 +18,7 @@ public:
     int add(int a, int b, int c) { return a + b + c; }
 };
 ```
-> **Note:** All three functions are named `add` but have different parameters. The compiler picks the right one based on the arguments.
+> **Note:** All three functions are named `add` but have different parameter lists. The compiler picks the right one based on the arguments. (Overloading typically happens within the same class, but can occur across scopes/inheritance if they form an overload set using `using`).
 
 ---
 
@@ -40,7 +40,7 @@ int main() {
     a->sound();   // Output: Dog barks (resolved at runtime)
 }
 ```
-> **Note:** `Dog` overrides `Animal::sound()`. The call through `Animal*` executes `Dog::sound()` at runtime.
+> **Note:** `Dog` overrides `Animal::sound()`. The call through `Animal*` executes `Dog::sound()` at runtime because of the `virtual` keyword.
 
 ---
 
@@ -48,16 +48,16 @@ int main() {
 
 | Feature | Overloading | Overriding |
 |---------|-------------|------------|
-| **Binding** | Compile-time (static) | Runtime (dynamic) |
-| **Scope** | Same class or same scope | Base class and derived class |
-| **Signature** | Must differ (parameters) | Must be identical |
+| **Meaning** | Same name, different parameter lists | Derived class provides new implementation of virtual base function |
+| **Binding** | Compile-time | Runtime |
+| **Where** | Same overload set/scope; commonly same class | Base + derived class |
+| **Parameters** | Must differ | Must be the same |
 | **Inheritance** | Not required | Required |
-| **Virtual keyword** | Not needed | Base method must be `virtual` |
-| **Return type** | Can differ | Must be same (or covariant) |
-| **Purpose** | Convenience, readability | Runtime polymorphism |
-| **Resolution** | By compiler based on arguments | By VTABLE/VPTR at runtime |
-| **Access modifier** | Can be anything | Cannot be more restrictive (in Java); in C++ access is checked at compile time |
-| **Example** | `add(int, int)` vs `add(double, double)` | `Animal::sound()` vs `Dog::sound()` |
+| **`virtual`** | Not required | Required in base for runtime dispatch |
+| **Return type** | Cannot differ by return type alone | Same or covariant |
+| **Purpose** | Multiple ways to perform an operation | Specialized behavior through polymorphism |
+| **Resolution** | Overload resolution by compiler | Dynamic dispatch; implementations typically use vtable/vptr |
+| **`override`** | Not applicable | Recommended |
 
 ---
 
@@ -66,7 +66,7 @@ int main() {
 ```text
 Overloading (Compile-time)
 --------------------------
-Same class:
+Same overload set (commonly same class):
   add(int, int)
   add(double, double)
   add(int, int, int)
@@ -80,23 +80,22 @@ Base class:    virtual sound()
 Derived class: override sound()
 
 Animal* a = new Dog();
-a->sound();  -> Dog::sound()  (via VTABLE)
+a->sound();  -> Dog::sound()  (via dynamic dispatch)
 ```
 
 ---
 
 ## 💡 Key Points to Impress
-- **Overloading** = same name, different parameters, same class, compile-time.
-- **Overriding** = same name, same parameters, base + derived, runtime, requires `virtual`.
-- Overloading is about **convenience**; overriding is about **polymorphism**.
-- Overriding needs **inheritance**; overloading does not.
-- Use `override` keyword in C++11 to catch mistakes.
-- Overloading is resolved by the compiler; overriding is resolved by the VTABLE at runtime.
+- **Overloading** is resolved by the compiler (static polymorphism).
+- **Overriding** requires inheritance and a `virtual` base function (dynamic polymorphism).
+- Overloading parameter lists **must differ**.
+- Overriding parameter lists **must be identical**.
+- **Important:** Overloading is not strictly bound to the same class; it applies to any functions in the same overload set. However, for a simple interview answer, saying "typically within the same class" is acceptable.
 
 ---
 
 ## 🎯 Summary to Impress
-- **Overloading:** same name, different signature, compile-time, same class.
-- **Overriding:** same name, same signature, runtime, base-derived, `virtual`.
+- **Overloading:** same name, different parameters, compile time.
+- **Overriding:** base/derived, same parameters, virtual function, runtime.
 - **Overloading** = static polymorphism; **overriding** = dynamic polymorphism.
 - Know the difference — it’s a classic interview question.
