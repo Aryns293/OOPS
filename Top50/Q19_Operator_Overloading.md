@@ -1,19 +1,20 @@
 # Q19 Operator Overloading
 
-**Interview Answer:**
-Operator Overloading is a feature in C++ that allows us to redefine the behavior of existing operators (like +, -, *, ==, <<, etc.) for user-defined types (classes/structs). It lets us use operators with objects in a natural, intuitive way, just like with built-in types. It is a form of compile-time polymorphism.
+## 🎯 Interview Answer
+**Operator Overloading** is a feature in C++ that allows us to redefine the behavior of existing operators (like `+`, `-`, `*`, `==`, `<<`, etc.) for user-defined types (classes/structs). It lets us use operators with objects in a natural, intuitive way, just like with built-in types. It is a form of compile-time polymorphism.
 
-For example, we can overload + for a Complex class so that c1 + c2 adds two complex numbers.
+For example, we can overload `+` for a `Complex` class so that `c1 + c2` adds two complex numbers.
 
-Why Operator Overloading?
-Makes code more readable and intuitive (e.g., c1 + c2 instead of c1.add(c2)).
+### ❓ Why Operator Overloading?
+- Makes code more readable and intuitive (e.g., `c1 + c2` instead of `c1.add(c2)`).
+- Allows user-defined types to behave like built-in types.
+- Enhances expressiveness without sacrificing performance.
 
-Allows user-defined types to behave like built-in types.
+---
 
-Enhances expressiveness without sacrificing performance.
+## 💻 Example: Overloading `+` for Complex Numbers
 
-Example: Overloading + for Complex Numbers
-cpp
+```cpp
 class Complex {
 private:
     double real, imag;
@@ -36,79 +37,70 @@ int main() {
     c3.display();           // Output: 6 + 8i
     return 0;
 }
-Here, c1 + c2 is translated by the compiler to c1.operator+(c2).
+```
+> **Note:** Here, `c1 + c2` is translated by the compiler to `c1.operator+(c2)`.
 
-Which Operators Cannot Be Overloaded?
-The following operators cannot be overloaded in C++:
+---
 
-Operator	Description
-::	Scope resolution operator
-sizeof	Size-of operator
-.	Member selector (dot operator)
-.*	Member pointer selector
-?:	Ternary conditional operator
-Why?
+## 🚫 Which Operators Cannot Be Overloaded?
+The following operators **cannot** be overloaded in C++:
 
-:: and sizeof are resolved at compile time and are not associated with objects.
+| Operator | Description |
+|----------|-------------|
+| `::` | Scope resolution operator |
+| `sizeof` | Size-of operator |
+| `.` | Member selector (dot operator) |
+| `.*` | Member pointer selector |
+| `?:` | Ternary conditional operator |
 
-. and .* are used to access members; overloading them would create ambiguity and break the language’s core syntax.
+### Why?
+- `::` and `sizeof` are resolved at compile time and are not associated with objects.
+- `.` and `.*` are used to access members; overloading them would create ambiguity and break the language’s core syntax.
+- `?:` is a control-flow operator; overloading it would complicate parsing and is unnecessary.
 
-?: is a control-flow operator; overloading it would complicate parsing and is unnecessary.
+> **Note:** You also cannot create new operators (e.g., `**` for exponentiation) or change an operator’s precedence, associativity, or number of operands.
 
-Note: You also cannot create new operators (e.g., ** for exponentiation) or change an operator’s precedence, associativity, or number of operands.
+---
 
-Rules for Operator Overloading
-At least one operand must be a user-defined type (class/struct/enum). You cannot overload operators for only built-in types.
+## 📜 Rules for Operator Overloading
+1. At least one operand must be a user-defined type (class/struct/enum). You cannot overload operators for only built-in types.
+2. You cannot change the number of operands (arity) of an operator.
+3. You cannot change the precedence or associativity.
+4. **Must be member functions:** `=`, `[]`, `()`, `->`, `->*`
+5. **Must be non-member functions (usually friend):** `<<`, `>>` for streams.
 
-You cannot change the number of operands (arity) of an operator.
+---
 
-You cannot change the precedence or associativity.
+## 📊 Diagram: Operator Overloading Categories
 
-Some operators must be overloaded as member functions:
-
-=, [], (), ->, ->*
-
-Some operators must be overloaded as non-member functions (usually friend):
-
-<<, >> for streams.
-
-Operators that cannot be overloaded are listed above.
-
-Diagram: Operator Overloading Categories
-text
-Operator Overloading
-        |
-   +----+----+
-   |         |
-Member    Non-Member
-(Operator)  (Friend/Global)
-   |         |
+```text
+       Operator Overloading
+               |
+          +----+----+
+          |         |
+       Member    Non-Member
+     (Operator) (Friend/Global)
+          |         |
 =, [], (), ->   <<, >>, +, -, ==
-Key Points to Impress
-Operator overloading = compile-time polymorphism.
+```
 
-Redefines existing operators for user-defined types.
+---
 
-Makes code intuitive and readable.
+## 💡 Key Points to Impress
+- **Operator overloading** = compile-time polymorphism.
+- Redefines existing operators for user-defined types.
+- Makes code intuitive and readable.
+- **Cannot overload:** `::`, `sizeof`, `.`, `.*`, `?:`.
+- **Cannot create** new operators or change precedence/associativity.
+- At least **one operand** must be user-defined.
+- Some operators must be members; some are better as non-members.
+- Use it judiciously — overuse can make code confusing.
 
-Cannot overload: ::, sizeof, ., .*, ?:.
+---
 
-Cannot create new operators or change precedence/associativity.
-
-At least one operand must be user-defined.
-
-Some operators must be members; some are better as non-members.
-
-Use it judiciously — overuse can make code confusing.
-
-Summary to impress:
-
-Operator overloading lets you use operators with objects naturally.
-
-Example: Complex c3 = c1 + c2; is cleaner than c1.add(c2).
-
-Cannot overload: ::, sizeof, ., .*, ?:.
-
-Follow rules: at least one user-defined operand, no arity/precedence changes.
-
-It’s a powerful tool for intuitive and expressive code.
+## 🎯 Summary to Impress
+- Operator overloading lets you use operators with objects naturally.
+- Example: `Complex c3 = c1 + c2;` is cleaner than `c1.add(c2)`.
+- **Cannot overload:** `::`, `sizeof`, `.`, `.*`, `?:`.
+- **Follow rules:** at least one user-defined operand, no arity/precedence changes.
+- It’s a powerful tool for intuitive and expressive code.
