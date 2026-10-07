@@ -1,27 +1,39 @@
-# Q38 final Keyword
+# Q38 `final` Keyword
 
-**Interview Answer:**
-final is used to prevent inheritance or overriding.
+## 🎯 Interview Answer
+The `final` keyword in C++ is used to prevent further inheritance of a class or to prevent further overriding of a virtual method.
 
-final class: Cannot be inherited.
+### ⚙️ Usage
+- **`final` class**: A class marked as `final` cannot be inherited by any other class.
+- **`final` method**: A virtual method marked as `final` cannot be overridden in any derived classes.
 
-final method: Cannot be overridden in derived classes.
+---
 
-Code:
+## 💻 Code Example
 
-cpp
-class Base final {  // cannot be inherited
+### Preventing Class Inheritance
+```cpp
+class Base final {  
+    // This class cannot be inherited
 };
 
-class Derived : public Base {  // ERROR
+class Derived : public Base {  // ERROR: cannot derive from 'final' base 'Base'
 };
+```
 
+### Preventing Method Overriding
+```cpp
 class A {
 public:
-    virtual void show() final {}  // cannot be overridden
+    virtual void show() final {}  // This method cannot be overridden
 };
 
 class B : public A {
-    void show() override {}  // ERROR
+    void show() override {}  // ERROR: declaration of 'show' overrides a 'final' function
 };
-Summary: final enforces design constraints and can help with optimization.
+```
+
+---
+
+## 🎯 Summary to Impress
+The `final` keyword enforces strict design constraints and can also help the compiler perform optimizations (like devirtualization) by explicitly stating that a class or method will not be extended.
